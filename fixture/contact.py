@@ -71,12 +71,16 @@ class ContactHelper:
     def update_first_contact(self, new_contact_data):
         wd = self.app.wd
         # переход на страницу home page
-        wd.find_element_by_xpath("//div[@id='nav']//a[.='home']").click()
+        self.open_home_page()
         self.open_edit_contact_page()
         self.fill_contact_form(new_contact_data)
 
         # contact update
         wd.find_element_by_xpath("//input[@name='update']").click()
+
+    def open_home_page(self):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//div[@id='nav']//a[.='home']").click()
 
     def open_contact_page(self):
         wd = self.app.wd
@@ -88,7 +92,12 @@ class ContactHelper:
 
     def delete_first_contact(self):
         wd = self.app.wd
-        wd.find_element_by_xpath("//div[@id='nav']//a[.='home']").click()
+        self.open_home_page()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
+
+    def count(self):
+        wd = self.app.wd
+        self.open_home_page()
+        return len(wd.find_elements_by_name("selected[]"))
