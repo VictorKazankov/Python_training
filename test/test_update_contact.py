@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 from model.contact import Contact
 
-
-
 def test_update_contact(app):
     if app.contact.count() == 0:
-        app.contact.create(Contact(firstname ="", middlename ="", lastname ="", nickname ="",
+        app.contact.create(Contact(firstname ="Victor", middlename ="", lastname ="Kazankov", nickname ="",
                                title = "", company = "", address = "", home = "",
                                mobile = "", work = "", fax = "", email = "",
                                email2 = "", email3 = "", homepage = "",
