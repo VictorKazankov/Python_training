@@ -70,13 +70,13 @@ class ContactHelper:
         wd.find_element_by_name(field_name).clear()
         wd.find_element_by_name(field_name).send_keys(text)
 
-    def update_first_contact(self, new_contact_data):
+
+    def update_contact_by_index(self, new_contact_data, index):
         wd = self.app.wd
         # переход на страницу home page
         self.open_home_page()
-        self.open_edit_contact_page()
+        self.select_contact_edit_by_index(index)
         self.fill_contact_form(new_contact_data)
-
         # contact update
         wd.find_element_by_xpath("//input[@name='update']").click()
         self.contact_cache = None
@@ -91,17 +91,23 @@ class ContactHelper:
         if not (wd.current_url.endswith("/edit.php") and len(wd.find_elements_by_name("submit")) > 0):
            wd.find_element_by_link_text("add new").click()
 
-    def open_edit_contact_page(self):
-        wd = self.app.wd
-        wd.find_element_by_xpath("//img[@title = 'Edit']").click()
-
-    def delete_first_contact(self):
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.open_home_page()
-        wd.find_element_by_name("selected[]").click()
+        self.select_contact_by_index(index)
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
         self.contact_cache = None
+
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_contact_edit_by_index(self, index):
+        wd = self.app.wd
+        # здесь в локаторе подставляется номер строки для которой нужно использовать редактирование
+        # он вычисляется index + 2, так как нулевая строка контакта имеет номер 2 в локаторе
+        wd.find_element_by_xpath(".//tr[%s]/td[8]/a/img" % str(index + 2)).click()
 
     def count(self):
         wd = self.app.wd
