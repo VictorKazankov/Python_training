@@ -1,8 +1,30 @@
 # -*- coding: utf-8 -*-
-from random import randrange
+import random
+import string
+import pytest
+
 from model.contact import Contact
 
-def test_update_contact(app):
+def random_string(prefix,maxlen):
+    symbols = string.ascii_letters + string.digits
+    return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
+
+def random_string_only_digits(maxlen):
+    digits_ = string.digits
+    return "".join([random.choice(digits_) for i in range(random.randrange(maxlen))])
+
+
+testdata = [Contact(firstname=random_string("firstname", 10), middlename=random_string("middlename", 10), lastname=random_string("lastname", 10),
+            nickname=random_string("nickname", 10), title=random_string("title", 20), company=random_string("company", 10),
+            address=random_string("address", 50), homephone=random_string_only_digits(12), mobilephone=random_string_only_digits(12),
+            workphone=random_string_only_digits(12), fax=random_string_only_digits(10), email="myemail@mm.com",
+            email2="tyhuor@ty.com", email3="tgbyu@uu.com", homepage=random_string("firstname", 10), bday="8", bmonth="March",
+            byear="1909", aday="15", amonth="December", ayear="2010", address2=random_string("address2", 50),
+            secondaryphone=random_string_only_digits(12), notes=random_string("notes", 50))
+    for i in range(5)
+]
+@pytest.mark.parametrize("contact", testdata, ids=[repr(x) for x in testdata])
+def test_update_contact(app, contact):
     if app.contact.count() == 0:
         app.contact.create(Contact(firstname ="Victor", middlename ="", lastname ="Kazankov", nickname ="",
                                    title = "", company = "", address = "", homephone = "",
@@ -11,14 +33,7 @@ def test_update_contact(app):
                                    bday = "1", bmonth = "March", byear = "", aday = "1", amonth = "March", ayear = "", address2 = "",
                                    secondaryphone="", notes =""))
     old_contacts = app.contact.get_contact_list()
-    index = randrange(len(old_contacts))
-    contact = Contact(firstname="Victor_update", middlename="Ivanovic_update", lastname="Kazankov_update",
-                      nickname="Six_update", title="MyTitle_update", company="MyCompany_update",
-                      address="MyAddress_update", homephone="+380000000", mobilephone="800000000", workphone="900000000",
-                      fax="200000000", email="myemail_update@mm.com", email2="tyhuor_update@ty.com",
-                      email3="tgbyu_update@uu.com", homepage="myhomepage_update", bday="1", bmonth="April",
-                      byear="1900", aday="16", amonth="-", ayear="2001", address2="MyAddress2_update",
-                      secondaryphone="23000000", notes="MyNotes_update")
+    index = random.randrange(len(old_contacts))
     contact.id = old_contacts[index].id
     app.contact.update_contact_by_index(contact, index)
     new_contacts = app.contact.get_contact_list()
