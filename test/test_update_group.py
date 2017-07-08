@@ -1,21 +1,10 @@
 # -*- coding: utf-8 -*-
 import random
-import string
-import pytest
 from model.group import Group
 
 
-def random_string(prefix, maxlen):
-    symbols = string.ascii_letters + string.digits
-    return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
-
-testdata = [
-    Group(name=random_string("name", 10), header=random_string("header", 20), footer=random_string("footer", 20))
-    for i in range(5)
-]
-
-@pytest.mark.parametrize("group", testdata, ids = [repr(x) for x in testdata])
-def test_update_group_name(app,group):
+def test_update_group_name(app,json_groups):
+    group = json_groups
     if app.group.count() == 0:
         app.group.create(Group(name="test"))
     old_groups = app.group.get_group_list()
