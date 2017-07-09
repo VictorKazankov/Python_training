@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
 import random
-import string
-import pytest
-from data.contacts import testdata_simple
-
 from model.contact import Contact
 
-
-@pytest.mark.parametrize("contact", testdata_simple, ids=[repr(x) for x in testdata_simple])
-def test_update_contact(app, contact):
+def test_update_contact(app, json_contacts):
+    contact = json_contacts
     if app.contact.count() == 0:
         app.contact.create(contact)
     old_contacts = app.contact.get_contact_list()

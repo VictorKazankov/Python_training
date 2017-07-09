@@ -13,7 +13,7 @@ def random_string_only_digits(maxlen):
     return "".join([random.choice(digits_) for i in range(random.randrange(maxlen))])
 
 
-testdata_simple = [
+testdata = [
     Contact(firstname="Victor", middlename="Ivanovich", lastname="Kazankov", nickname="Six",
             title = "MyTitle", company = "MyCompany", address = "MyAddress", homephone = "+380555555",
             mobilephone = "8099258789", workphone = "9874444444", fax = "285999999", email = "myemail@mm.com",
