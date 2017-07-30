@@ -111,6 +111,10 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
+    def edit_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector(".center a[href='edit.php?id=%s']" % id).click()
+
     def select_contact_by_id(self, id):
         wd = self.app.wd
         wd.find_element_by_css_selector("input[id='%s']" % id).click()
@@ -153,6 +157,17 @@ class ContactHelper:
                 self.contact_cache.append(Contact(firstname=firstname, lastname=lastname, id=id,
                                                   all_phones_from_home_page = all_phones))
         return list(self.contact_cache)
+
+
+    def update_contact_by_id(self, id, new_contact_data):
+        wd = self.app.wd
+        self.open_home_page()
+        self.edit_contact_by_id(id)
+        #wd.find_element_by_name("edit").click()
+        self.fill_contact_form(new_contact_data)
+        # submit group creation
+        wd.find_element_by_name("update").click()
+        self.group_cache = None
 
     # def get_contact_list(self):
     #     if self.contact_cache is None:
