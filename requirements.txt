@@ -4,5 +4,4 @@ jsonpickle
 pony
 pymysql
 mysql-connector-python-rf
-json
 importlib
